@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import static images
@@ -11,6 +11,7 @@ import entertainmentImage from "../assets/images/entertainment.jpg";
 
 const CategoriesPage = () => {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const categories = [
     { name: "Technology", image: technologyImage },
@@ -25,9 +26,36 @@ const CategoriesPage = () => {
     navigate(`/dashboard?category=${category}`);
   };
 
+  const handleSearch = () => {
+    if (searchTerm.trim() === "") {
+      alert("Please enter a search term.");
+      return;
+    }
+    navigate(`/dashboard?search=${searchTerm}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div style={styles.page}>
       <h1 style={styles.headline}>Explore Categories</h1>
+      <div style={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search categories..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown} // Trigger search on Enter key press
+          style={styles.searchBar}
+        />
+        <button onClick={handleSearch} style={styles.searchButton}>
+          Search
+        </button>
+      </div>
       <div style={styles.categories}>
         {categories.map((category) => (
           <div
@@ -64,17 +92,48 @@ const styles = {
     padding: "20px",
     fontSize: "2.5rem",
     fontWeight: "bold",
-    marginBottom: "50px",
+    marginBottom: "20px",
     textTransform: "uppercase",
     letterSpacing: "2px",
     color: "#f0f0f0",
   },
+  searchContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "30px",
+    gap: "10px",
+  },
+  searchBar: {
+    width: "100%",
+    maxWidth: "300px",
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #444",
+    backgroundColor: "#2c2c2c",
+    color: "#fff",
+    fontSize: "1rem",
+    outline: "none",
+  },
+  searchButton: {
+    padding: "10px 20px",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    transition: "background-color 0.3s",
+  },
+  searchButtonHover: {
+    backgroundColor: "#0056b3",
+  },
   categories: {
     display: "grid",
-   gridTemplateRows: "repeat(auto-fit, minmax(200px, 2fr))", // Adjusts dynamically for responsiveness
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Adjusts dynamically for responsiveness
-    gap: "50px", // Reduced gap for smaller screens
-    width: "100%", 
+    gridTemplateRows: "repeat(auto-fit, minmax(200px, 2fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: "50px",
+    width: "100%",
     padding: "20px",
     maxWidth: "1200px",
   },
@@ -88,17 +147,13 @@ const styles = {
     boxShadow: "0 6px 12px rgba(0, 0, 0, 0.3)",
     position: "relative",
   },
-  categoryCardHover: {
-    transform: "scale(1.05)",
-    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.4)",
-  },
   imageWrapper: {
     position: "relative",
     overflow: "hidden",
   },
   categoryImage: {
     width: "100%",
-    height: "200px", // Adjusted height for better responsiveness
+    height: "200px",
     objectFit: "cover",
     transition: "transform 0.3s ease-in-out",
   },
@@ -108,18 +163,12 @@ const styles = {
     left: "0",
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Dark overlay
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     opacity: "0",
     transition: "opacity 0.3s ease-in-out",
   },
-  categoryCardHoverImage: {
-    transform: "scale(1.1)", // Zoom effect on hover
-  },
-  categoryCardHoverOverlay: {
-    opacity: "1", // Show overlay on hover
-  },
   categoryName: {
-    fontSize: "1.5rem", // Adjusted font size for better responsiveness
+    fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#fff",
     padding: "10px 0",
