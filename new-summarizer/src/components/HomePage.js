@@ -21,16 +21,30 @@ const HomePage = () => {
           Simplify your news consumption with concise summaries. Stay informed, save time, and explore the topics that matter most.
         </p>
         <div style={styles.ctaButtons}>
-          <button onClick={handleLogin} style={styles.ctaButton}>
+          <button 
+            onClick={handleLogin} 
+            style={styles.ctaButton}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#0056b3'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#007bff'}
+          >
             Login
           </button>
-          <button onClick={handleSignup} style={styles.ctaButtonOutline}>
+          <button 
+            onClick={handleSignup} 
+            style={styles.ctaButtonOutline}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#ffffff';
+              e.target.style.color = '#007bff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.color = '#ffffff';
+            }}
+          >
             Sign Up
           </button>
         </div>
       </div>
-
-     
     </div>
   );
 };
@@ -74,6 +88,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     gap: "15px",
+    flexWrap: "wrap", // Ensures buttons stack on smaller screens
   },
   ctaButton: {
     padding: "12px 25px",
@@ -98,24 +113,39 @@ const styles = {
     transition: "0.3s",
     cursor: "pointer",
   },
-  explore: {
-    marginTop: "40px",
-    textAlign: "center",
-    maxWidth: "800px",
+  // Responsive Design
+  '@media (max-width: 768px)': {
+    headline: {
+      fontSize: "2rem", // Decrease font size on smaller screens
+    },
+    description: {
+      fontSize: "1rem", // Adjust description font size for smaller screens
+    },
+    ctaButtons: {
+      flexDirection: "column", // Stack buttons vertically
+      gap: "10px", // Reduce gap between buttons
+    },
+    ctaButton: {
+      padding: "10px 20px", // Smaller padding for buttons
+    },
+    ctaButtonOutline: {
+      padding: "10px 20px", // Smaller padding for outline button
+    },
   },
-  sectionTitle: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    marginBottom: "20px",
-    textTransform: "uppercase",
-    letterSpacing: "1.5px",
-    color: "#ffffff", // White text
-  },
-  exploreText: {
-    fontSize: "1rem",
-    marginBottom: "20px",
-    lineHeight: "1.5",
-    color: "#dcdcdc", // Slightly lighter gray for text
+
+  '@media (max-width: 480px)': {
+    headline: {
+      fontSize: "1.5rem", // Even smaller headline on very small devices
+    },
+    description: {
+      fontSize: "0.9rem", // Even smaller description text
+    },
+    ctaButton: {
+      padding: "10px 15px", // Smaller button size for very small devices
+    },
+    ctaButtonOutline: {
+      padding: "10px 15px", // Matching padding for outline button
+    },
   },
 };
 

@@ -25,34 +25,7 @@ mongoose
 
 
 // Use the routes
-app.use('/api', authRoutes);
-app.post("/api/signup", async (req, res) => {
-    try {
-      const { name, email, password } = req.body;
-  
-      // Validate input
-      if (!name || !email || !password) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-  
-      // Check if user already exists
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({ message: "User already exists" });
-      }
-  
-      // Save user
-      const newUser = new User({ name, email, password });
-      await newUser.save();
-  
-      res.status(201).json({ message: "User created successfully" });
-  
-    } catch (error) {
-      console.error("Signup Error:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
-  
+app.use('/api', authRoutes)
 
 // Fetch external news
 app.get('/api/news/:category', async (req, res) => {
@@ -76,32 +49,29 @@ app.get('/api/news/:category', async (req, res) => {
 });
 
 // Fetch summarized news
-app.get('/api/news/summarize-url/:category', async (req, res) => {
-    const category = req.params.category; // Fix: Use req.params instead of req.query
+app.post('/api/summarize-url', async (req, res) => {
+    const { url, summary_length } = req.body;
 
-    if (!category) {
-        return res.status(400).json({ message: "Category is required" });
+    if (!url) {
+        return res.status(400).json({ message: "URL is required" });
     }
 
-    const apiUrl = `https://newsai-tibe.onrender.com/summarize/${category}`;
-
     try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error('Failed to fetch summarized news');
+        const response = await fetch("https://newsai-tibe.onrender.com/summarize-url/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url, summary_length: summary_length || 5 }),
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch summary');
 
         const data = await response.json();
         res.json(data);
     } catch (error) {
-        console.error("Error fetching summarized news:", error);
-
-        // Fallback dummy data
-        const dummySummarizedNews = [
-            { title: "Technology Advances in 2025", summary: "AI & quantum computing advancements.", image: "https://via.placeholder.com/150", url: "https://example.com/technology-advances-2025" },
-            { title: "Global Sports Highlights", summary: "Major sports events and record-breaking performances.", image: "https://via.placeholder.com/150", url: "https://example.com/global-sports-highlights" },
-            { title: "Political Developments", summary: "Governments focus on climate change and economy.", image: "https://via.placeholder.com/150", url: "https://example.com/political-developments" }
-        ];
-
-        res.json({ articles: dummySummarizedNews });
+        console.error("Error fetching summary:", error);
+        res.status(500).json({ message: "Error fetching summary", error: error.message });
     }
 });
 

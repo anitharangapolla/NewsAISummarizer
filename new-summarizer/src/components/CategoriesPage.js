@@ -31,7 +31,12 @@ const CategoriesPage = () => {
       alert("Please enter a search term.");
       return;
     }
-    navigate(`/dashboard?search=${searchTerm}`);
+    // Check if the category name matches the search term
+    if (categories.some(cat => cat.name.toLowerCase().includes(searchTerm.toLowerCase()))) {
+      navigate(`/dashboard?search=${searchTerm}`);
+    } else {
+      alert("No categories found.");
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -146,6 +151,10 @@ const styles = {
     transition: "transform 0.3s, box-shadow 0.3s",
     boxShadow: "0 6px 12px rgba(0, 0, 0, 0.3)",
     position: "relative",
+  },
+  categoryCardHover: {
+    transform: 'scale(1.05)', // Slight zoom effect on hover
+    boxShadow: '0 12px 24px rgba(0, 0, 0, 0.5)',
   },
   imageWrapper: {
     position: "relative",

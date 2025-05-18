@@ -157,6 +157,45 @@ const styles = {
     fontWeight: 'bold',
     transition: 'color 0.2s',
   },
+
+  // Responsive Design
+  '@media (max-width: 768px)': {
+    container: {
+      padding: '20px',
+      maxWidth: '90%',
+    },
+    title: {
+      fontSize: '1.8rem', // Adjust font size on smaller screens
+    },
+    input: {
+      fontSize: '1rem', // Smaller font size for inputs on mobile
+    },
+    button: {
+      padding: '10px 15px', // Adjust button size on smaller screens
+    },
+    footer: {
+      fontSize: '12px', // Smaller text for footer on mobile
+    },
+  },
+
+  '@media (max-width: 480px)': {
+    container: {
+      padding: '15px',
+      maxWidth: '90%',
+    },
+    title: {
+      fontSize: '1.6rem', // Further adjust title font size for very small screens
+    },
+    input: {
+      fontSize: '0.9rem', // Smaller font size for very small devices
+    },
+    button: {
+      padding: '8px 12px', // Further reduce button size
+    },
+    footer: {
+      fontSize: '10px', // Even smaller footer text
+    },
+  },
 };
 
 export default LoginPage;

@@ -4,10 +4,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeButton, setActiveButton] = useState(""); // Track active button
-  const [isDarkMode, setIsDarkMode] = useState(true); // Dark/Light mode toggle
+  const [activeButton, setActiveButton] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current route
+  const location = useLocation();
 
   useEffect(() => {
     const updateMobileView = () => {
@@ -35,12 +35,25 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ ...styles.navbar, backgroundColor: isDarkMode ? "#111" : "#fff", color: isDarkMode ? "#fff" : "#000" }}>
-      {/* Logo */}
+    <nav
+      style={{
+        ...styles.navbar,
+        backgroundColor: isDarkMode ? "#111" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      }}
+    >
       <div style={styles.logo}>📰 News Summarizer</div>
 
       {/* Desktop Menu */}
-      <ul style={{ ...styles.navLinks, display: isOpen && isMobile ? "flex" : "block" }}>
+      <ul
+        style={{
+          ...styles.navLinks,
+          display: isOpen && isMobile ? "flex" : "block",
+          flexDirection: isOpen && isMobile ? "column" : "row", // Stack items on mobile
+          opacity: isOpen && isMobile ? 1 : 0,
+          transition: "opacity 0.3s ease", // Smooth transition for menu visibility
+        }}
+      >
         <li style={styles.navItem}>
           <Link
             to="/"
@@ -49,7 +62,7 @@ const Navbar = () => {
               borderBottom: location.pathname === "/" ? "2px solid #fff" : "none",
               color: isDarkMode ? "#fff" : "#000",
             }}
-            onClick={() => setIsOpen(false)} // Close menu on click
+            onClick={() => setIsOpen(false)}
           >
             Home
           </Link>
@@ -62,7 +75,7 @@ const Navbar = () => {
               borderBottom: location.pathname === "/categories" ? "2px solid #fff" : "none",
               color: isDarkMode ? "#fff" : "#000",
             }}
-            onClick={() => setIsOpen(false)} // Close menu on click
+            onClick={() => setIsOpen(false)}
           >
             Categories
           </Link>
@@ -75,7 +88,7 @@ const Navbar = () => {
               borderBottom: location.pathname === "/about" ? "2px solid #fff" : "none",
               color: isDarkMode ? "#fff" : "#000",
             }}
-            onClick={() => setIsOpen(false)} // Close menu on click
+            onClick={() => setIsOpen(false)}
           >
             About
           </Link>
@@ -88,7 +101,7 @@ const Navbar = () => {
               borderBottom: location.pathname === "/contact" ? "2px solid #fff" : "none",
               color: isDarkMode ? "#fff" : "#000",
             }}
-            onClick={() => setIsOpen(false)} // Close menu on click
+            onClick={() => setIsOpen(false)}
           >
             Contact
           </Link>
@@ -136,7 +149,7 @@ const Navbar = () => {
   );
 };
 
-// **Enhanced Styling**
+// Enhanced Styling with Animations
 const styles = {
   navbar: {
     display: "flex",
@@ -160,6 +173,7 @@ const styles = {
     display: "flex",
     gap: "20px",
     listStyle: "none",
+    transition: "all 0.3s ease",
   },
   navItem: {
     display: "inline",
@@ -182,6 +196,10 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     transition: "0.3s",
+    ":hover": {
+      backgroundColor: "#007bff",
+      color: "#fff",
+    },
   },
   signupBtn: {
     backgroundColor: "transparent",
@@ -190,6 +208,10 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     transition: "0.3s",
+    ":hover": {
+      backgroundColor: "#007bff",
+      color: "#fff",
+    },
   },
   themeToggle: {
     backgroundColor: "transparent",
